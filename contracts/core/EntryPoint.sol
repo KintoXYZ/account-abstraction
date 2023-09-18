@@ -7,6 +7,7 @@ pragma solidity ^0.8.12;
 import "../interfaces/IAccount.sol";
 import "../interfaces/IPaymaster.sol";
 import "../interfaces/IEntryPoint.sol";
+import "../interfaces/IWalletFactory.sol";
 
 import "../utils/Exec.sol";
 import "./StakeManager.sol";
@@ -609,6 +610,14 @@ contract EntryPoint is IEntryPoint, StakeManager, NonceManager, ReentrancyGuard,
         
         if (!_validateAndUpdateNonce(mUserOp.sender, mUserOp.nonce)) {
             revert FailedOp(opIndex, "AA25 invalid account nonce");
+        }
+
+        try IWalletFactory(walletFactory).getWalletVersion(mUserOp.sender) returns (uint256 version) {
+            if (version == 0) {
+                revert FailedOp(opIndex, "AA35 invalid wallet version");
+            }
+        } catch {
+            revert FailedOp(opIndex, "AA35 invalid wallet factory");
         }
         
         // A "marker" where account opcode validation is done and paymaster opcode validation
