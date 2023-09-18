@@ -39,6 +39,14 @@ contract EntryPoint is IEntryPoint, StakeManager, NonceManager, ReentrancyGuard,
      */
     uint256 public constant SIG_VALIDATION_FAILED = 1;
 
+    /** Kinto Modification. Allow only wallets from the wallet factory */
+    address public walletFactory;
+
+    function setWalletFactory(address _walletFactory) external {
+        require(walletFactory == address(0), "AA36 wallet factory already set");
+        walletFactory = _walletFactory;
+    }
+
     /// @inheritdoc OpenZeppelin.IERC165
     function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
         // note: solidity "type(IEntryPoint).interfaceId" is without inherited methods but we want to check everything
