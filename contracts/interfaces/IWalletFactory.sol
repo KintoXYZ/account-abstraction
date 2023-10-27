@@ -12,5 +12,5 @@ pragma solidity ^0.8.12;
 interface IWalletFactory {
 
 
-  function getWalletVersion(address wallet) external view returns (uint256);
+  function getWalletTimestamp(address wallet) external view returns (uint256);
 }

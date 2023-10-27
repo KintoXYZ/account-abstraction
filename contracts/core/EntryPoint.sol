@@ -612,9 +612,9 @@ contract EntryPoint is IEntryPoint, StakeManager, NonceManager, ReentrancyGuard,
             revert FailedOp(opIndex, "AA25 invalid account nonce");
         }
 
-        try IWalletFactory(walletFactory).getWalletVersion(mUserOp.sender) returns (uint256 version) {
+        try IWalletFactory(walletFactory).getWalletTimestamp(mUserOp.sender) returns (uint256 version) {
             if (version == 0) {
-                revert FailedOp(opIndex, "AA35 invalid wallet version");
+                revert FailedOp(opIndex, "AA35 invalid wallet");
             }
         } catch {
             revert FailedOp(opIndex, "AA35 invalid wallet factory");
