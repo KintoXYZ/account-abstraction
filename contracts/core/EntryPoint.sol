@@ -617,10 +617,6 @@ contract EntryPoint is IEntryPoint, StakeManager, NonceManager, ReentrancyGuard,
         } catch {
             revert FailedOp(opIndex, "AA35 invalid wallet factory");
         }
-        
-        // A "marker" where account opcode validation is done and paymaster opcode validation
-        // is about to start (used only by off-chain simulateValidation).
-        numberMarker();
 
         bytes memory context;
         if (mUserOp.paymaster != address(0)) {
