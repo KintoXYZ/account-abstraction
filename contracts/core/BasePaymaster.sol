@@ -3,7 +3,7 @@ pragma solidity ^0.8.12;
 
 /* solhint-disable reason-string */
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "../interfaces/IPaymaster.sol";
 import "../interfaces/IEntryPoint.sol";
 import "./Helpers.sol";
@@ -13,11 +13,16 @@ import "./Helpers.sol";
  * provides helper methods for staking.
  * Validates that the postOp is called only by the entryPoint.
  */
-abstract contract BasePaymaster is IPaymaster, Ownable {
+abstract contract BasePaymaster is OwnableUpgradeable, IPaymaster {
     IEntryPoint public immutable entryPoint;
 
     constructor(IEntryPoint _entryPoint) {
         entryPoint = _entryPoint;
+    }
+
+    function initialize(address _owner) public virtual initializer {
+        __Ownable_init();
+        _transferOwnership(_owner);
     }
 
     /// @inheritdoc IPaymaster
